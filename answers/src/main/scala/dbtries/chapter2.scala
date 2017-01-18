@@ -140,8 +140,8 @@ class chapter2 {
   // isSorted( (1::2::3::4::2::Nil).toArray, orderedInt )
   // isSorted( ('A'::'B'::'C'::'D'::'E'::Nil).toArray, orderedChar )
   // isSorted( ('A'::'B'::'C'::'F'::'E'::Nil).toArray, orderedChar )
+  // isSorted( ('A'::'B'::'C'::'F'::'E'::Nil).toArray, ((a:Char, b:Char) => if (b.compareTo(a) >= 0) true else false) )
 
 
-  
 
 }
