@@ -143,5 +143,17 @@ class chapter2 {
   // isSorted( ('A'::'B'::'C'::'F'::'E'::Nil).toArray, ((a:Char, b:Char) => if (b.compareTo(a) >= 0) true else false) )
 
 
+  // partial1 puzzle, pg 25-26
+  def partial1[A,B,C](a: A, f: (A,B) => C): B => C = {
+    (b) => f(a, b)
+  }
+  // ex: partial1(10, (a:Int,b:Int)=> a==b)
+  // resX(10) ... should be true
+  // resX(11) ... should be false
+  // trying again with explicit typing:
+  def partial1[A,B,C](a: A, f: (A,B) => C): B => C = {
+    (b: B) => f(a: A, b: B)
+  }
+
 
 }
