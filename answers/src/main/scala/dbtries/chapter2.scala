@@ -5,9 +5,22 @@ import scala.annotation.tailrec
 /**
   * Created by danbrauer1 on 1/14/17.
   */
-class exercise_2_1 {
+class chapter2 {
 
   /**
+    * Simple factorial function.  Tailr style.
+    */
+  def factorial(n: Long) : Long = {
+    @tailrec def loop(accum: Long, countdown: Long): Long = countdown match {
+      case 0 => accum
+      case _ => loop(accum * countdown, countdown - 1)
+    }
+
+    loop(0, n)
+  }
+
+  /**
+    * Ex 2.1
     * Method gets the nth fibonacci number, where n=1 means the 1st number.
     * Tail recursive.
     * Take 2 after giving it a tiny bit more thought.  I suspect the book's answer is more concise...
@@ -26,6 +39,7 @@ class exercise_2_1 {
     loop(1,0,3)
   }
 
+  // Ex 2.1
   // copied from GettingStarted.scala
   // 0 and 1 are the first two numbers in the sequence,
   // so we start the accumulators with those.
@@ -40,6 +54,7 @@ class exercise_2_1 {
 
 
   /**
+    * Ex 2.1
     * I wrote this one before reading the chapter.
     * Method gets the nth fibonacci number, where n=1 means the 1st number.
     * Not tail recursive.
@@ -52,6 +67,7 @@ class exercise_2_1 {
   }
 
   /**
+    * Ex 2.1
     * I wrote this one before reading the chapter.
     * Method gets the nth fibonacci number, where n=1 means the 1st number.
     * Tail recursive.
@@ -73,6 +89,7 @@ class exercise_2_1 {
   }
 
   /**
+    * Ex 2.1
     * I wrote this one before reading the chapter.
     * Method gets the nth fibonacci number, where n=1 means the 1st number.
     * Iterative, not recursive.
@@ -99,14 +116,32 @@ class exercise_2_1 {
   }
 
   /**
-    * Simple factorial function.  Tailr style.
+    * Ex 2.2
     */
-  def factorial(n: Long) : Long = {
-    @tailrec def loop(accum: Long, countdown: Long) : Long = countdown match {
-      case 0 => accum
-      case _ => loop(accum*countdown, countdown-1)
+  def isSorted[A](as: Array[A], ordered: (A,A) => Boolean): Boolean = {
+
+    if (as==null || as.isEmpty) false; // can't be sorted
+    if (as.length == 1) true; // can't be unsorted
+
+    @tailrec
+    def loop(n: Int) : Boolean = {
+      if (n == as.length-1) true
+      else if (ordered(as(n), as(n+1))) loop(n+1)
+      else false
     }
-    loop(0, n)
+
+    loop(0)
   }
+
+  // helpers for Ex 2.2 and some simple tests
+  def orderedInt(a: Int, b: Int): Boolean = { if (b>=a) true else false }
+  def orderedChar(a: Char, b: Char): Boolean = { if (b.compareTo(a) >= 0) true else false }
+  // isSorted( (1::2::3::4::Nil).toArray, orderedInt )
+  // isSorted( (1::2::3::4::2::Nil).toArray, orderedInt )
+  // isSorted( ('A'::'B'::'C'::'D'::'E'::Nil).toArray, orderedChar )
+  // isSorted( ('A'::'B'::'C'::'F'::'E'::Nil).toArray, orderedChar )
+
+
+  
 
 }
