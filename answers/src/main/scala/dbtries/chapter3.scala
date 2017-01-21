@@ -5,6 +5,10 @@ package dbtries
   */
 class chapter3 {
 
-  
+// Ex 3.1
+  // answer: 3
+
+
+
 
 }
