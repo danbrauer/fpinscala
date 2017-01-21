@@ -8,7 +8,8 @@ import scala.annotation.tailrec
 class chapter2 {
 
   /**
-    * Simple factorial function.  Tailr style.
+    * Simple factorial function.
+    * Tailr style.
     */
   def factorial(n: Long) : Long = {
     @tailrec def loop(accum: Long, countdown: Long): Long = countdown match {
@@ -52,7 +53,6 @@ class chapter2 {
     loop(n, 0, 1)
   }
 
-
   /**
     * Ex 2.1
     * I wrote this one before reading the chapter.
@@ -66,27 +66,6 @@ class chapter2 {
     case x => fibonacci_nontailr(x-1) + fibonacci_nontailr(x-2)
   }
 
-  /**
-    * Ex 2.1
-    * I wrote this one before reading the chapter.
-    * Method gets the nth fibonacci number, where n=1 means the 1st number.
-    * Tail recursive.
-    */
-  def fibonacci_tailr(n: Long): Long = {
-
-    @tailrec
-    def loop(minusone: Long, minustwo: Long, counter: Long): Long = counter match {
-      case `n` => minusone + minustwo
-      case x if x < n => loop(minusone+minustwo, minusone, counter+1)
-    }
-
-    n match {
-      case x if x < 1 => throw new IllegalArgumentException("n must be greater than 1. n=1 for the 1st fibonacci number. n=2 for the second. etc.")
-      case 1 => 0 // first fibonacci number
-      case 2 => 1 // second fibonacci number
-      case _ => loop(1,0,3)
-    }
-  }
 
   /**
     * Ex 2.1
@@ -155,5 +134,53 @@ class chapter2 {
     (b: B) => f(a: A, b: B)
   }
 
+  /**
+    * Ex 2.3
+    * I think I got this right but... brain hurts
+    */
+  def curry[A,B,C](f: (A,B) => C): A => (B => C) = {
+    (a: A) => (b: B) => f(a,b)
+  }
+  // to test:
+  // val testf = (a: Int, b: Int) => (a*b)
+  // curry(testf)  ... returns something like res1: Int => (Int => Int) = <function1>
+  // res1(10) ... should return (B => C) ... res2: Int => Int ...
+  // res2(10) = 100
+
+  // the book's answer:
+  // Note that `=>` associates to the right, so we could
+  // write the return type as `A => B => C`
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
+  a => b => f(a, b)
+
+  /**
+    * Ex 2.4
+    */
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C = {
+    (a: A,b: B) => {
+      val bToC: B => C = f(a)
+      bToC(b)
+    }
+  }
+
+  /**
+    * Ex 2.4, shorter version.
+    * If I ever met someone who wrote code like this in a professional setting, I'd wish them harm.
+    */
+  def uncurryShorter[A,B,C](f: A => B => C): (A, B) => C = {
+    (a,b) => f(a)(b)
+  }
+
+  // book's answer for 2.4:
+  // Exercise 4: Implement `uncurry`
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
+  (a, b) => f(a)(b)
+
+  /**
+    * Ex 2.5
+    */
+  def compose[A,B,C](f: B => C, g: A => B): A => C = {
+    (a: A) => f(g(a))
+  }
 
 }
