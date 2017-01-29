@@ -96,10 +96,10 @@ class chapter3 {
     * Ex 3.5 done without built-ins...  NOT tailrec ...
     * Wasn't sure how to do this with tail recursion...  a quick google didn't illuminate so moving on...
     *
-    * dropWhile(List(1,2,3,4,5,6,7,8), (x: Int) => x%2==0 )
+    * keepWhile(List(1,2,3,4,5,6,7,8), (x: Int) => x%2==0 )
     *
     */
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
+  def keepWhile[A](l: List[A], f: A => Boolean): List[A] = {
 
     def loop(inner: List[A]): List[A] = inner match {
       case List() => inner
@@ -110,6 +110,22 @@ class chapter3 {
 
     loop(l)
   }
+
+  // Ex 3.5 ... with tail rec... but reverses the list!
+  def keepWhile[A](l: List[A], f: A => Boolean): List[A] = {
+
+    @tailrec
+    def loop(toFilter: List[A], filtered: List[A]): List[A] = toFilter match {
+      case List() => filtered
+      case h :: t =>
+        if (f(h)) loop(t, h :: filtered)
+        else loop(t, filtered)
+    }
+
+    loop(l, List())
+  }
+
+
 
   /**
     * Ex 3.6
@@ -124,8 +140,7 @@ class chapter3 {
 
 
 // TODO I MISREAD THE DEF OF DROPWHILE SO REDO ...
-// TODO review book's answers before proceeding and re-read pages 36&37
-// TODO ask in #scala for how to do tail-recursive
-// TODO see scala's Vector's implementation of head, tail, and init ...
+// TODO review book's answers for 3.5 and 3.6 ... and re-read pages 36&37
+// TODO see scala's Vector's implementation of head, tail, and init ... ?
 
 }
