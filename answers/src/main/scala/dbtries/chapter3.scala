@@ -25,13 +25,19 @@ class chapter3 {
     case null => throw new NullPointerException("ctail of null list)")
   }
 
-  // this doesn't work... will have to look into implicits...
-//  // Ex 3.1 attempting implicit version...
-//  implicit def myVersionOfTailIMPLICIT[T]( aList: List[T]) : List[T] = aList match {
-//    case _ :: tail => tail
-//    case List() => throw new UnsupportedOperationException("tail of empty list)")
-//    case null => throw new NullPointerException("ctail of null list)")
-//  }
+
+  // trying the above but making it implict...?
+  implicit class listDan[T](l: List[T]) {
+
+    def myVersionOfTail : List[T] = l match {
+      case _ :: tail => tail
+      case List() => throw new UnsupportedOperationException("tail of empty list)")
+      case null => throw new NullPointerException("ctail of null list)")
+    }
+
+  }
+  // not sure I prefer this to a plain old Utils class with statics... but, okay.
+
 
   /**
     * Ex 3.3
@@ -89,6 +95,9 @@ class chapter3 {
   /**
     * Ex 3.5 done without built-ins...  NOT tailrec ...
     * Wasn't sure how to do this with tail recursion...  a quick google didn't illuminate so moving on...
+    *
+    * dropWhile(List(1,2,3,4,5,6,7,8), (x: Int) => x%2==0 )
+    *
     */
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
 
@@ -114,8 +123,9 @@ class chapter3 {
   }
 
 
+// TODO I MISREAD THE DEF OF DROPWHILE SO REDO ...
 // TODO review book's answers before proceeding and re-read pages 36&37
-// TODO ask in #scala
+// TODO ask in #scala for how to do tail-recursive
 // TODO see scala's Vector's implementation of head, tail, and init ...
 
 }
