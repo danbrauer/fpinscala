@@ -311,5 +311,92 @@ class chapter3 {
 //  TODO: review diff between foldRight and foldLeft… maybe look online, this book’s not explaining it for me
 
 
+  /**
+    * 3.16
+    */
+
+  def plusOne1(l : List[Double]): List[Double] = {
+    l.map( a => a + 1)
+  }
+
+  def plusOne2(l : List[Double]): List[Double] = {
+
+    @tailrec def loop(newlist: List[Double], oldlist: List[Double]) : List[Double] = oldlist match {
+      case Nil => newlist
+      case h :: t => loop(h+1 :: newlist, t)
+    }
+
+    loop(List(), l).reverse
+  }
+
+  def plusOne3(l: List[Double]) : List[Double] = {
+    l.foldRight(List[Double]())( (a, b) => a+1 :: b)
+  }
+
+  /**
+    * 3.17
+    */
+
+  def convertToString(l: List[Double]) : List[String] = {
+    l.map( a => a.toString)
+  }
+
+  def convertToString2(l: List[Double]) : List[String] = {
+    l.foldRight(List[String]())( (h, t) => h.toString :: t)
+  }
+
+
+  /**
+    * 3.18
+    */
+
+  def myMap[A,B](as: List[A])(f: A => B): List[B] = {
+
+    @tailrec
+    def loop(oldl: List[A], newl: List[B]): List[B] = oldl match {
+      case Nil => newl
+      case h :: t => loop( t, f(h) :: newl )
+    }
+
+    loop(as, List[B]()).reverse
+  }
+
+
+  def myMap2[A,B](as: List[A])(f: A => B): List[B] = {
+    as.foldRight(List[B]())( (a,b) => f(a) :: b )
+  }
+
+
+  /**
+    * 3.19
+    */
+
+  def filter1[A](as: List[A])(f: A => Boolean): List[A] = {
+    as.foldLeft(List[A]())(  (newlist, nextA) => if (f(nextA)) nextA :: newlist else newlist  ).reverse
+  }
+
+  def filter2[A](as: List[A])(f: A => Boolean): List[A] = {
+    as.foldRight(List[A]())( (nextA, newlist) =>  if (f(nextA)) nextA :: newlist else newlist  )
+  }
+
+  /**
+    * 3.20
+    */
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
+    val list = myMap2(l)(f)
+    list.foldRight(List[B]())( (res:List[B], next: List[B]) => next ::: res  ).reverse
+  }
+
+  // the book proposes using concat of a map ... I'd forgotten we'd implemented concat...
+
+  /**
+    * 3.21
+    */
+
+  def filterViaFlatmap[A](l: List[A])(f: A => Boolean): List[A] = {
+    // TODO
+    null
+  }
 
 }
