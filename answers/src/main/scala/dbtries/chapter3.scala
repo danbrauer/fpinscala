@@ -433,28 +433,51 @@ class chapter3 {
   //    }
 
 
-  //  def addTogether1[Double](l1: List[Double], l2: List[Double]): List[Double] = {
-  //
-  ////    def add[A](a:A, b:A): A = {
-  ////      a + b
-  ////    }
-  //
-  //    @tailrec
-  //    def loop(addedTogether:List[Double], remaining1:List[Double], remaining2:List[Double]):List[Double] = remaining1 match {
-  //      case Nil => addedTogether ::: remaining2
-  //      case h :: t =>
-  //        val added = h + remaining2.head
-  //        loop(added::addedTogether, t, remaining2.tail)
-  //    }
-  //
-  //    loop(List[Double](), l1, l2)
-  //  }
+  // first try...  won't work because 'head' and 'tail' of empty list throw exceptions...
+  def addTogether1(l1: List[Double], l2: List[Double]): List[Double] = {
 
-  def addTogether2[Double](l1: List[Double], l2: List[Double]): List[Double] = (l1, l2) match {
-    case // TODO
+    @tailrec
+    def loop(addedTogether:List[Double], remaining1:List[Double], remaining2:List[Double]):List[Double] = remaining1 match {
+      case Nil => addedTogether ::: remaining2
+      case h :: t =>
+        val added = h + remaining2.head
+        loop(added::addedTogether, t, remaining2.tail)
+    }
 
+    loop(List[Double](), l1, l2)
   }
 
+  // snuck a peek at book's answer's signature then did this...
+  def addTogether2(l1: List[Double], l2: List[Double]): List[Double] = (l1, l2) match {
+    case (_, Nil) => l1
+    case (Nil, _) => l2
+    case (h1::t1,h2::t2) => h1+h2 :: addTogether2( t1, t2 )
+  }
 
+  // book's real answer doesn't seem to work here...
+  // also I don't think it'll work for lists of un-equal length....
+//  def addPairwise(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
+//    case (Nil, _) => Nil
+//    case (_, Nil) => Nil
+//    case (Cons(h1,t1), Cons(h2,t2)) => Cons(h1+h2, addPairwise(t1,t2))
+//  }
+
+  /**
+    * 3.23
+    */
+
+  // my version differs a bit from book's in that I append the tail of the longer list to the result...
+  def zipWith[A](l1: List[A], l2: List[A])(f: (A,A) => A): List[A] = (l1, l2) match {
+    case (a, Nil) => a
+    case (Nil, b) => b
+    case (h1::t1,h2::t2) => f(h1,h2) :: zipWith(t1,t2)(f)
+  }
+
+  // tests...
+  // zipWith(List(1,2,3,4),List(10,20,30))(_+_)
+  // zipWith(List(1,2,3,4),List(10,20,30,0,50))(_*_)
+  // zipWith(List("hi","yes","red","sky"),List("ho","no","blue"))(_ + _)
+
+  
 
 }
