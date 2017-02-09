@@ -478,6 +478,144 @@ class chapter3 {
   // zipWith(List(1,2,3,4),List(10,20,30,0,50))(_*_)
   // zipWith(List("hi","yes","red","sky"),List("ho","no","blue"))(_ + _)
 
-  
+
+  /**
+    * 3.24 take 1 ... basically, two loops
+    */
+
+  def hasSubsequences[A](sup: List[A], sub: List[A]): Boolean = {
+
+    // given two lists, checks if their next elements match
+    // to be true, every entry in remainingSub would have to be in remainingSup
+    @tailrec
+    def innerLoop(remainingSup: List[A], remainingSub: List[A]): Boolean = (remainingSup, remainingSub) match {
+      case (Nil, Nil) => true
+      case (a, Nil) => true
+      case (Nil, a) => false
+      case (h1::t1, h2::t2) => {
+        if (h1 == h2) innerLoop(t1, t2)
+        else false
+      }
+    }
+
+    // we need to loop through each entry in sup and check whether
+    // its next characters match sub
+    @tailrec
+    def outerLoop(remainingSup: List[A]): Boolean = {
+      val hasSub = innerLoop(remainingSup, sub)
+      if (hasSub) true
+      else {
+        if (remainingSup.isEmpty) false
+        else outerLoop(remainingSup.tail)
+      }
+    }
+
+    outerLoop(sup)
+  }
+
+  /**
+    * 3.24 take 2 ... with built-ins
+    */
+  def hasSubsequences2[A](sup: List[A], sub: List[A]): Boolean = {
+    sup.containsSlice(sub)
+  }
+
+
+  /**
+    * 3.25
+    */
+  sealed trait Tree[+A]
+  case class Leaf[A](value: A) extends Tree[A]
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+
+  object Tree {
+
+    def size[A](t: Tree[A]): Integer = t match {
+      case Leaf(_) => 1
+      case Branch(left,right) => 1 + size(left) + size(right)
+    }
+
+
+    // tried a few different things but didn't know how to do this tailrec style
+//    def sizeTailRec[A](t: Tree[A]): Integer = {
+//
+//      @tailrec def loop(l: Tree[A], r: Tree[A], count: Int) : Integer = (l,r) match {
+//        case (Leaf(_), Leaf(_)) => count + 2
+//        case (Branch(l1,r1), Leaf(_)) => loop(l1, r1, count + 1)
+//        case (Leaf(_), Branch(l1,r1)) => loop(l1, r1, count + 1)
+//        case (Branch(l1,r1), Branch(l2,r2)) => {
+//          loop(l1, r1, count+1) + loop(l2,r2, count+1)
+//        }
+//      }
+//
+//      t match {
+//        case Leaf(_) => 1
+//        case Branch(l,r) => loop(l, r, 1)
+//      }
+//
+//    }
+
+
+    /**
+      * Ex 3.26
+      */
+    def maximum(t: Tree[Int]): Int = {
+
+      def loop(t1: Tree[Int], tmpMax: Int): Int = t1 match {
+        case (Leaf(a)) => a.max(tmpMax)
+        case Branch(left,right) => loop(left, tmpMax) max loop(right, tmpMax)
+      }
+
+      loop(t, Int.MinValue)
+    }
+
+    def maximum1(t: Tree[Int]): Int = t match {
+      case (Leaf(a)) => a
+      case Branch(left,right) => maximum1(left) max maximum1(right)
+    }
+
+
+    /**
+      * Ex 3.27
+      */
+    def depth(t: Tree[Int]): Int = t match {
+      case (Leaf(a)) => 1
+      case Branch(left,right) => 1 + (depth(left) max depth(right))
+    }
+
+    /**
+      * Ex 3.28
+      */
+
+    // ?  not sure how to do this if can't update the tree as I go...
+    // not sure my signature is right either...
+    def myMap[A](t:Tree[A])(f: (Tree[A]) => Tree[A]): Tree[A] = t match {
+      case (Leaf(_)) => f(t)
+      case Branch(left,right) => Branch( myMap(f(left))(f), myMap(f(right))(f) )
+    }
+
+    // book's answer...
+    def map[A,B](t: Tree[A])(f: A => B): Tree[B] = t match {
+      case Leaf(a) => Leaf(f(a))
+      case Branch(l,r) => Branch(map(l)(f), map(r)(f))
+    }
+
+
+    /**
+      * Ex 2.29
+      * ... these exercises are getting tedious...
+      */
+//    def treeFunction[A,B](t:Tree[A])(f: A=>B) = t match {
+//      case (Leaf(_)) => f(t)
+//      case (Branch(l,r))   ...
+//    }
+    //
+    // ... this one should maybe be labeled Hard.  Or maybe I'm just pooped...
+
+
+
+  }
+
+
 
 }
