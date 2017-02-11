@@ -130,9 +130,9 @@ class chapter2 {
   // resX(10) ... should be true
   // resX(11) ... should be false
   // trying again with explicit typing:
-  def partial1[A,B,C](a: A, f: (A,B) => C): B => C = {
-    (b: B) => f(a: A, b: B)
-  }
+//  def partial1[A,B,C](a: A, f: (A,B) => C): B => C = {
+//    (b: B) => f(a: A, b: B)
+//  }
 
   /**
     * Ex 2.3
@@ -150,8 +150,8 @@ class chapter2 {
   // the book's answer:
   // Note that `=>` associates to the right, so we could
   // write the return type as `A => B => C`
-  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
-  a => b => f(a, b)
+//  def curry[A,B,C](f: (A, B) => C): A => (B => C) =
+//  a => b => f(a, b)
 
   /**
     * Ex 2.4
@@ -173,8 +173,8 @@ class chapter2 {
 
   // book's answer for 2.4:
   // Exercise 4: Implement `uncurry`
-  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
-  (a, b) => f(a)(b)
+//  def uncurry[A,B,C](f: A => B => C): (A, B) => C =
+//  (a, b) => f(a)(b)
 
   /**
     * Ex 2.5

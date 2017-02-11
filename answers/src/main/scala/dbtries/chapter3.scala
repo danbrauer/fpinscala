@@ -74,20 +74,20 @@ class chapter3 {
   /**
     * Ex 3.4 done again with match on list instead of the int
     */
-  def drop[A](l: List[A], n: Int): List[A] = {
-    if (n < 0) sys.error(s"drop can't drop a negative number of elements: $n")
-
-    @tailrec
-    def loop(l: List[A], countdown: Int): List[A] = {
-      if (countdown == 0) l
-      else l match {
-        case Nil => l
-        case _ :: tail => loop(tail, countdown - 1)
-      }
-    }
-
-    loop(l, n)
-  }
+//  def drop[A](l: List[A], n: Int): List[A] = {
+//    if (n < 0) sys.error(s"drop can't drop a negative number of elements: $n")
+//
+//    @tailrec
+//    def loop(l: List[A], countdown: Int): List[A] = {
+//      if (countdown == 0) l
+//      else l match {
+//        case Nil => l
+//        case _ :: tail => loop(tail, countdown - 1)
+//      }
+//    }
+//
+//    loop(l, n)
+//  }
 
   /**
     * Ex 3.5
@@ -117,18 +117,18 @@ class chapter3 {
   }
 
   // Ex 3.5 ... with tail rec... but reverses the list!
-  def keepWhile[A](l: List[A], f: A => Boolean): List[A] = {
-
-    @tailrec
-    def loop(toFilter: List[A], filtered: List[A]): List[A] = toFilter match {
-      case List() => filtered
-      case h :: t =>
-        if (f(h)) loop(t, h :: filtered)
-        else loop(t, filtered)
-    }
-
-    loop(l, List())
-  }
+//  def keepWhile[A](l: List[A], f: A => Boolean): List[A] = {
+//
+//    @tailrec
+//    def loop(toFilter: List[A], filtered: List[A]): List[A] = toFilter match {
+//      case List() => filtered
+//      case h :: t =>
+//        if (f(h)) loop(t, h :: filtered)
+//        else loop(t, filtered)
+//    }
+//
+//    loop(l, List())
+//  }
 
 
   /**
@@ -144,16 +144,16 @@ class chapter3 {
 
   // Ex 3.6 tailrec version ...  this seems better than the book's answer, which uses mutable buffer... ?
   // except my version needs "reverse" at the end...
-  def init[A](l: List[A]): List[A] = {
-
-    @tailrec def loop(accumulatedHead: List[A], reducedTail: List[A]): List[A] = reducedTail match {
-      case Nil => accumulatedHead
-      case x :: Nil => accumulatedHead
-      case x :: tail => loop(x :: accumulatedHead, tail)
-    }
-
-    loop(Nil, l).reverse
-  }
+//  def init[A](l: List[A]): List[A] = {
+//
+//    @tailrec def loop(accumulatedHead: List[A], reducedTail: List[A]): List[A] = reducedTail match {
+//      case Nil => accumulatedHead
+//      case x :: Nil => accumulatedHead
+//      case x :: tail => loop(x :: accumulatedHead, tail)
+//    }
+//
+//    loop(Nil, l).reverse
+//  }
 
 
   /**
@@ -247,7 +247,7 @@ class chapter3 {
   def product2(l: List[Integer]) = foldLeft(l, 1)(_ * _)
 
   // length
-  def length(l: List[Integer]) = foldLeft(l, 0)((b, a) => b + 1)
+  //def length(l: List[Integer]) = foldLeft(l, 0)((b, a) => b + 1)
 
 
   // book's answers
