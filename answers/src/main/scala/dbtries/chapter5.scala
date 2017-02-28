@@ -97,17 +97,37 @@ class chapter5 {
 //      loop(empty, this)
 //    }
 
+    // ex 5.4
     // book's answer... not sure this works??  seems like it'll stop going if it hits something that evaluates to false
-    def takeWhile(f: A => Boolean): Stream[A] = this match {
-      case Cons(h,t) if f(h()) => cons(h(), t() takeWhile f)
-      case _ => empty
+//    def takeWhile(f: A => Boolean): Stream[A] = this match {
+//      case Cons(h,t) if f(h()) => cons(h(), t() takeWhile f)
+//      case _ => empty
+//    }
+
+
+    // ex 5.5  ...
+    def takeWhile(f: A => Boolean): Stream[A] = {
+       foldRight(Stream[A]())( (h,t) =>
+        if (f(h)) { cons(h,t) }
+        else empty
+       )
+    }
+
+
+    // this solution is right according to the book but  Iwonder what happens to the last val?
+    def forAll(p: A => Boolean): Boolean = {
+      foldRight(false)( (h,t) => p(h) && t ) // what about the last val when t will be Nil?
     }
 
 
 
-    def forAll(p: A => Boolean): Boolean = sys.error("todo")
+    // ex 5.6
+    // my answer is same as book's except they label t as _ because it doesn't matter
+    def headOption: Option[A] = {
+      foldRight(Option.empty[A])( (h,t) => Some(h) )
+    }
 
-    def headOption: Option[A] = sys.error("todo")
+
 
     // 5.7 map, filter, append, flatmap using foldRight. Part of the exercise is
     // writing your own function signatures.
