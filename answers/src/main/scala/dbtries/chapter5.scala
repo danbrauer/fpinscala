@@ -132,6 +132,34 @@ class chapter5 {
     // 5.7 map, filter, append, flatmap using foldRight. Part of the exercise is
     // writing your own function signatures.
 
+    // got this one by myself
+    def map[B](f: A => B): Stream[B] = {
+      foldRight(empty[B])( (nextThing, accumulator) => cons(f(nextThing), accumulator ) )
+    }
+
+    // needed help from book's answer
+    def filter(f: A => Boolean): Stream[A] = {
+      foldRight(empty[A])( (next, result) =>  if (f(next)) cons(next, result) else result )
+    }
+
+    // didn't know how to do this one myself...
+//    def append(a: A): Stream[A] = {
+//      foldRight(empty[A])( (next, result) => if (next == empty) cons(a, result) else result )
+//    }
+    //book's answer...
+    def append[B>:A](s: => Stream[B]): Stream[B] =
+      foldRight(s)((h,t) => cons(h,t))
+
+    //
+    //def flatMap[B](f: A => Stream[B]): Stream[B] = ??
+    //book's answer:
+    def flatMap[B](f: A => Stream[B]): Stream[B] =
+    foldRight(empty[B])((h,t) => f(h) append t)
+
+
+
+
+
     def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
   }
   case object Empty extends Stream[Nothing]
@@ -158,3 +186,6 @@ class chapter5 {
 
 
 }
+
+
+
