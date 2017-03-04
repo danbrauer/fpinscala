@@ -3,6 +3,7 @@ package dbtries
 import fpinscala.laziness.Cons
 
 import scala.annotation.tailrec
+import scala.collection.immutable.Stream.cons
 
 /**
   * Created by DanielBrauer on 2/11/17.
@@ -187,5 +188,59 @@ class chapter5 {
 
 }
 
+
+object moreCh5Exercises {
+
+  // ex 5.8
+  def constant[A](a: A): Stream[A] = {
+    Stream.cons(a, constant(a))
+  }
+
+  // book has more 'efficient answer'  ... ?
+//  def constant_book[A](a: A): Stream[A] = {
+//    lazy val tail: Stream[A] = Cons(() => a, () => tail)
+//    tail
+//  }
+
+  //ex 5.9
+  def from(n: Int): Stream[Int] = {
+    Stream.cons(n, from(n+1))
+//    def innerFrom(n:Int, add:Int) : Stream[Int] = {
+//      Stream.cons(n+add, innerFrom(n, add+1))
+//    }
+//
+//    from(n)
+  }
+
+  // ex 5.10
+  def fibs(n: Int, priorn: Int): Stream[Int] = {
+    val next = n+priorn
+    Stream.cons(next, fibs(next, n))
+  }
+//  val fibs = {
+//    def go(f0: Int, f1: Int): Stream[Int] =
+//      cons(f0, go(f1, f0+f1))
+//    go(0, 1)
+//  }
+
+  // ex 5.11
+//  def unfold[A,S](z: S)(f: S => Option[(A,S)]): Stream[A] = {
+//    val next = f(z)
+//    next.map(_ => Stream.cons(_, unfold(_)(f)))
+//  }
+  // not correct...
+
+  // book's answer...
+//  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+//    f(z) match {
+//      case Some((h,s)) => cons(h, unfold(s)(f))
+//      case None => empty
+//    }
+
+
+
+
+
+}
 
 

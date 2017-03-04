@@ -132,10 +132,10 @@ class chapter4 {
       case Right(a) => Right(a)
     }
 
-    def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = this match {
-      case Left(e) => Left(e)
-      case Right(a) => Right(f(a,b))
-    }   // not sure if this is right... keep forgetting what their map2 is supposed to do
+//    def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = this match {
+//      case Left(e) => Left(e)
+//      case Right(a) => Right(f(a,b))
+//    }   // not sure if this is right... keep forgetting what their map2 is supposed to do
   }
   case class Left[+E](get: E) extends Either[E,Nothing]
   case class Right[+A](get: A) extends Either[Nothing,A]
