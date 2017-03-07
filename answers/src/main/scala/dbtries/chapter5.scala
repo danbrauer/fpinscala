@@ -238,9 +238,32 @@ object moreCh5Exercises {
 //    }
 
 
+}
+
+object ch5unfold {
+
+  // from the book, slightly tweaked
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    f(z) match {
+      case Some((h,s)) => cons(h, unfold(s)(f))
+      case None => Stream.empty
+    }
+
+  def constant[A](a: A): Stream[A] = {
+    //Stream.cons(a, constant(a))
+    //unfold(Stream.empty)( a => Some(a))
+    unfold(a)( _ => Some(a,a)) // from book?
+  }
 
 
+//  def map[A, B](as: List[A])(f: A => B): List[B] = {
+//    unfold(List[B]())( (a: A) => Some(f(a), as) )   // ????
+//  }
+
+
+  //// this chapter lost me, alas ... will have to return to these topics another day
 
 }
+
 
 
