@@ -62,11 +62,11 @@ class chapter5 {
 //      loop(Empty, 0, this)
 //    }
     //// the book's answer
-    def take(n: Int): Stream[A] = this match {
-      case Cons(h, t) if n > 1 => cons(h(), t().take(n - 1))
-      case Cons(h, _) if n == 1 => cons(h(), empty)
-      case _ => empty
-    }
+//    def take(n: Int): Stream[A] = this match {
+//      case Cons(h, t) if n > 1 => cons(h(), t().take(n - 1))
+//      case Cons(h, _) if n == 1 => cons(h(), empty)
+//      case _ => empty
+//    }
 
     /**
       * Ex 5.2
@@ -107,12 +107,12 @@ class chapter5 {
 
 
     // ex 5.5  ...
-    def takeWhile(f: A => Boolean): Stream[A] = {
-       foldRight(Stream[A]())( (h,t) =>
-        if (f(h)) { cons(h,t) }
-        else empty
-       )
-    }
+//    def takeWhile(f: A => Boolean): Stream[A] = {
+//       foldRight(Stream[A]())( (h,t) =>
+//        if (f(h)) { cons(h,t) }
+//        else empty
+//       )
+//    }
 
 
     // this solution is right according to the book but  Iwonder what happens to the last val?
@@ -134,28 +134,28 @@ class chapter5 {
     // writing your own function signatures.
 
     // got this one by myself
-    def map[B](f: A => B): Stream[B] = {
-      foldRight(empty[B])( (nextThing, accumulator) => cons(f(nextThing), accumulator ) )
-    }
+//    def map[B](f: A => B): Stream[B] = {
+//      foldRight(empty[B])( (nextThing, accumulator) => cons(f(nextThing), accumulator ) )
+//    }
 
     // needed help from book's answer
-    def filter(f: A => Boolean): Stream[A] = {
-      foldRight(empty[A])( (next, result) =>  if (f(next)) cons(next, result) else result )
-    }
+//    def filter(f: A => Boolean): Stream[A] = {
+//      foldRight(empty[A])( (next, result) =>  if (f(next)) cons(next, result) else result )
+//    }
 
     // didn't know how to do this one myself...
 //    def append(a: A): Stream[A] = {
 //      foldRight(empty[A])( (next, result) => if (next == empty) cons(a, result) else result )
 //    }
     //book's answer...
-    def append[B>:A](s: => Stream[B]): Stream[B] =
-      foldRight(s)((h,t) => cons(h,t))
+//    def append[B>:A](s: => Stream[B]): Stream[B] =
+//      foldRight(s)((h,t) => cons(h,t))
 
     //
     //def flatMap[B](f: A => Stream[B]): Stream[B] = ??
     //book's answer:
-    def flatMap[B](f: A => Stream[B]): Stream[B] =
-    foldRight(empty[B])((h,t) => f(h) append t)
+//    def flatMap[B](f: A => Stream[B]): Stream[B] =
+//    foldRight(empty[B])((h,t) => f(h) append t)
 
 
 

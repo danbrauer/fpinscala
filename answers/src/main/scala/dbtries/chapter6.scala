@@ -20,5 +20,14 @@ class chapter6 {
   }
 
 
+  // ex 6.2
+//  def double(rng: RNG): (Double, RNG) = {
+//    rng.non
+//    //val (i: Int, r: RNG) = rng.nextInt(1)
+//    //(i.toDouble, r)
+//
+//  }
+
+  /// MOVING ANSWERS TO THE /answers/exercises ...
 
 }

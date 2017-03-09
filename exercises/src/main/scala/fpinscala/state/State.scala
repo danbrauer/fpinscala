@@ -1,8 +1,12 @@
 package fpinscala.state
 
+import scala.annotation.tailrec
+
 
 trait RNG {
   def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
+  def nonNegativeInt(rng: RNG): (Int, RNG)
+  def double(rng: RNG): (Double, RNG)
 }
 
 object RNG {
@@ -30,17 +34,58 @@ object RNG {
       (f(a), rng2)
     }
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = ???
+  // ex 6.1 ... my solution, though I think this doesn't take into account the edge case they mention
+  def nonNegativeInt(rng: RNG): (Int, RNG) = {
+    val (i, rng2) = rng.nextInt
+    (Math.abs(i), rng2)
+  }
 
-  def double(rng: RNG): (Double, RNG) = ???
+  // book's answer ... with edge case ... they add a 1 to negative numbers...
+  def nonNegativeInt2(rng: RNG): (Int, RNG) = {
+    val (i, r) = rng.nextInt
+    (if (i < 0) -(i + 1) else i, r)
+  }
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def double(rng: RNG): (Double, RNG) = {
+    val (i, r) = rng.nonNegativeInt(rng)
+    (i / (Int.MaxValue.toDouble + 1), r) // got from the book
+  }
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def intDouble(rng: RNG): ((Int,Double), RNG) = {
+    val (i, r2) = rng.nextInt
+    // ((i, i.toDouble), r2)
+    val (d, r3) = rng.double(r2)
+    ((i,d), r3)
+  }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+//    val (d, r2) = rng.double(rng)
+//    val (i, r3) = r2.nextInt
+//    ((d,i), r3)
+    val ((i,d),r) = intDouble(rng)
+    ((d,i),r)
+  }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (d1,r1) = double(rng)
+    val (d2,r2) = double(r1)
+    val (d3,r3) = double(r2)
+    ((d1,d2,d3),r3)
+  }
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+
+    @tailrec
+    def loop(remaining: Int, result: List[Int], nextRng: RNG): (List[Int], RNG)  = remaining match {
+      case 0 => (result, nextRng)
+      case _ =>
+        val (i, r) = nextRng.nextInt
+        loop(remaining-1, i::result, r)
+    }
+
+    loop(count, List(), rng)
+  }
+
 
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 
